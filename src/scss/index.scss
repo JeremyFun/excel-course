@@ -20,9 +20,8 @@ body {
 .excel {
   position: relative;
   color: #888;
-}
+  height: 100%;
+  max-width: 100%;
+  font-size: .8rem;
 
-.excel-header {
-  position: absolute;
-  margin-bottom: 25px;
 }
