@@ -1,6 +1,6 @@
 class Dom {
     constructor(selector) {
-        this.$el = typeof selector == "string"
+        this.$el = typeof selector === "string"
             ? document.querySelector(selector)
             : selector
     }
@@ -14,19 +14,29 @@ class Dom {
     }
 
     clear() {
-        this.$el.html('')
+        this.html('')
         return this
     }
 
     append(node) {
         if (node instanceof Dom) {
-            this.$el.append(node.$el)
+            node = node.$el
         }
         if (Element.prototype.append) {
             this.$el.append(node)
         } else {
             this.$el.appendChild(node)
         }
+
+        return this
+    }
+
+    on(eventType, callback) {
+        this.$el.addEventListener(eventType, callback)
+    }
+
+    off(eventType, callback) {
+        this.$el.removeEventListener(eventType, callback)
     }
 }
 
