@@ -38,6 +38,22 @@ class Dom {
     off(eventType, callback) {
         this.$el.removeEventListener(eventType, callback)
     }
+
+    closest(data) {
+        return $(this.$el.closest(data))
+    }
+
+    getCoords() {
+        return this.$el.getBoundingClientRect()
+    }
+
+    get data() {
+        return this.$el.dataset
+    }
+
+    findAll(selector) {
+        return this.$el.querySelectorAll(selector)
+    }
 }
 
 export function $(selector) {
