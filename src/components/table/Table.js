@@ -7,7 +7,7 @@ export class Table extends ExcelComponent {
 
     constructor($root) {
         super($root, {
-            listeners: ['click', 'mousedown', 'mouseup', 'mousemove']
+            listeners: ['click', 'mousedown', 'mouseup']
         })
     }
 
@@ -25,20 +25,21 @@ export class Table extends ExcelComponent {
 
             const cell = this.$root.findAll(`[data-cell="${$parent.data.col}"]`)
 
-
             document.onmousemove = e => {
                 if (type === 'col') {
                     const delta = e.clientX - coords.right
                     const value = coords.width + delta
-                    $parent.$el.style.width = value + 'px'
+                    $parent.css({width: value + 'px'})
                     cell.forEach(cell => cell.style.width = value + 'px')
                 } else {
-                    const delta = e.screenY
-                    console.log(delta)
+                    const delta = e.clientY - coords.bottom
+                    const value = coords.height + delta
+                    $parent.css({height: value + 'px'})
                 }
             }
             document.onmouseup = () => {
                 document.onmousemove = null
+                document.onmouseup = null
             }
         }
     }
@@ -49,9 +50,5 @@ export class Table extends ExcelComponent {
 
     onMouseup() {
         console.log('onmouseup')
-    }
-
-    onMousemove() {
-        console.log('onmousemove')
     }
 }
