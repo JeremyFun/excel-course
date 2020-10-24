@@ -29,7 +29,7 @@ export function resizeHandler($root, event) {
         document.onmouseup = null
 
         $root
-            .findAll(`[data-cell="${$parent.data.col}"]`)
+            .findAll(`[data-col="${$parent.data.col}"]`)
             .forEach(cell => cell.style.width = value + 'px')
         if (type === 'col') {
             $parent.css({width: value + 'px'})
