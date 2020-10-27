@@ -1,34 +1,30 @@
 import {ExcelComponent} from '@core/ExcelComponent'
+import {$} from "@core/dom";
 import {createTable} from '@/components/table/table.template'
 import {resizeHandler} from "@/components/table/table-resize";
 import {TableSelection} from "@/components/table/TableSelection";
-import {$} from "@core/dom";
-import {isCell, shouldResize} from "@/components/table/table.functions";
+import {
+    isCell,
+    matrix,
+    nextSelector,
+    shouldResize
+} from "@/components/table/table.functions";
 
 export class Table extends ExcelComponent {
     static className = 'excel__table'
 
     constructor($root) {
         super($root, {
-            listeners: ['click', 'mousedown', 'mouseup']
+            listeners: ['mousedown', 'keydown']
         })
-    }
-
-    prepare() {
-        this.selection = new TableSelection()
     }
 
     toHTML() {
         return createTable(20)
     }
 
-    onMousedown(event) {
-        if (shouldResize(event)) {
-            resizeHandler(this.$root, event)
-        } else if (isCell(event)) {
-            const $target = $(event.target)
-            this.selection.select($target)
-        }
+    prepare() {
+        this.selection = new TableSelection()
     }
 
     init() {
@@ -37,11 +33,36 @@ export class Table extends ExcelComponent {
         this.selection.select($cell)
     }
 
-    onClick() {
-        console.log('onclick')
+    onMousedown(event) {
+        if (shouldResize(event)) {
+            resizeHandler(this.$root, event)
+        } else if (isCell(event)) {
+            const $target = $(event.target)
+            if (event.shiftKey) {
+                const $cells = matrix($target, this.selection.current)
+                    .map(el => this.$root.find(`[data-id="${el}"]`))
+                this.selection.selectGroup($cells)
+            } else {
+                this.selection.select($target)
+            }
+        }
     }
 
-    onMouseup() {
-        console.log('onmouseup')
+    onKeydown(event) {
+        const keys = [
+            'Tab',
+            'Enter',
+            'ArrowLeft',
+            'ArrowRight',
+            'ArrowUp',
+            'ArrowDown'
+        ]
+
+        if (keys.includes(event.key)) {
+            event.preventDefault()
+            const id = this.selection.current.id(true)
+            const $next = this.$root.find(nextSelector(event.key, id))
+            this.selection.select($next)
+        }
     }
 }

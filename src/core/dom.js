@@ -68,11 +68,27 @@ class Dom {
     }
 
     addClass(className) {
-        return this.$el.classList.add(className)
+        this.$el.classList.add(className)
     }
 
     removeClass(className) {
-        return this.$el.classList.remove(className)
+        this.$el.classList.remove(className)
+    }
+
+    id(parse) {
+        if (parse) {
+            const parsed = this.id().split(':')
+            return {
+                row: +parsed[0],
+                col: +parsed[1]
+            }
+        }
+        return this.data.id
+    }
+
+    focus() {
+        this.$el.focus()
+        return this
     }
 }
 
