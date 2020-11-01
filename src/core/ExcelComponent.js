@@ -14,6 +14,14 @@ export class ExcelComponent extends DomListener {
         return ''
     }
 
+    $emit(eventName, fn) {
+        this.emitter.emit(eventName, fn)
+    }
+
+    $on(eventName, fn) {
+        this.emitter.subscribe(eventName, fn)
+    }
+
     init() {
         this.initDOMListeners()
     }
