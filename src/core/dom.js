@@ -15,7 +15,8 @@ class Dom {
 
     text(text) {
         if (typeof text === 'string') {
-            return this.$el.textContent = text
+            this.$el.textContent = text
+            return this
         }
         if (this.$el.tagName.toLowerCase() === 'input') {
             return this.$el.value.trim()

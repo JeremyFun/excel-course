@@ -16,10 +16,10 @@ export class Excel {
 
         this.components = this.components.map(Component => {
             const $el = $.create('div', Component.className)
-            const component = new Component($el, componentOptions)
-            if (component.name) {
-                window['c' + component.name] = component
-            }
+            const component = new Component($el, componentOptions) // // DEBUG
+            // if (component.name) {
+            //   window['c' + component.name] = component
+            // }
             $el.html(component.toHTML())
             $root.append($el)
             return component
@@ -31,5 +31,9 @@ export class Excel {
         this.$el.append(this.getRoot())
 
         this.components.forEach(component => component.init())
+    }
+
+    destroy() {
+        this.components.forEach(component => component.destroy())
     }
 }
