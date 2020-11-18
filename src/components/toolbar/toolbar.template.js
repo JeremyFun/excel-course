@@ -1,42 +1,48 @@
 function toButton(button) {
-    console.log('buttonValue', button.value)
-    return `<div class="button ${button.active ? "active" : ""}">
-        <i class="material-icons" data-type="button">${button.icon}</i>
+    const json = `data-value='${JSON.stringify(button.value)}'`
+    const meta = `data-type="button" ${json}`
+    return `<div class="button ${button.active ? "active" : ""}" ${meta}>
+        <i class="material-icons" ${meta}>${button.icon}</i>
     </div>`
 }
 
-export function createToolbar() {
+export function createToolbar(state) {
     const keys = [
         {
             icon: 'format_align_left',
-            active: false,
-            value: 'textAlign: left'
+            active: state['textAlign'] === 'left',
+            value: {textAlign: "left"}
         },
         {
             icon: 'format_align_center',
-            active: false,
-            value: 'textAlign: left'
+            active: state['textAlign'] === 'center',
+            value: {textAlign: state['textAlign'] === 'center'?
+                    "left" : "center"}
 
         },
         {
             icon: 'format_align_right',
-            active: false,
-            value: 'textAlign: right'
+            active: state['textAlign'] === 'right',
+            value: {textAlign: state['textAlign'] === 'right'?
+                    "left" : "right"}
         },
         {
             icon: 'format_bold',
-            active: true,
-            value: 'fontWeight: bold'
+            active: state['fontWeight'] === 'bold',
+            value: {fontWeight: state['fontWeight'] === 'bold'
+                    ? "normal" : "bold"}
         },
         {
             icon: 'format_italic',
-            active: true,
-            value: 'fontStyle: italic'
+            active: state['fontStyle'] === 'italic',
+            value: {fontStyle: state['fontStyle'] === 'italic'
+                    ? "normal" : "italic"}
         },
         {
             icon: 'format_underline',
-            active: false,
-            value: 'fontStyle: underline'
+            active: state['textDecoration'] === 'underline',
+            value: {textDecoration: state['textDecoration'] === 'underline'
+                    ? "none" : "underline"}
         }
     ]
     return keys.map(toButton).join('')
